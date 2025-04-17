@@ -130,7 +130,6 @@ export const HomePage = () => {
       <div className="flex-1">
         <ImageGrid
           images={filteredImages}
-          toggleActive={toggleImageActive}
           onReorder={reorderImages}
         />
       </div>
