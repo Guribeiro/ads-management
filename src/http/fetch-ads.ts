@@ -1,4 +1,5 @@
 import { api } from "./api-client";
+import { Status } from "./toggle-ad-active";
 
 interface Ad {
   id: string
@@ -7,6 +8,14 @@ interface Ad {
   status: 'ATIVO' | 'DESATIVADO'
 }
 
-export async function fetchAds() {
-  return api.get<Ad[]>('/news')
+interface FetchAds {
+  status: Status | null
+}
+
+export async function fetchAds({ status }: FetchAds) {
+  return api.get<Ad[]>('/news', {
+    params: {
+      status
+    }
+  })
 }

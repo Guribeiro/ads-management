@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Search } from "lucide-react";
+import { CirclePower, Loader2, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleAdActive } from "@/http/toggle-ad-active";
 import { toast } from "sonner";
+import { useSearchParams } from "react-router";
+import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 
 export interface Image {
   id: string;
@@ -26,10 +28,11 @@ const ImageGrid = ({
   onSearch = () => { },
 }: ImageGridProps) => {
   const queryClient = useQueryClient()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const status = searchParams.get('status') || 'all'
 
   const [searchQuery, setSearchQuery] = useState("");
   const [pendingId, setPendingId] = useState<string | null>(null)
-
 
   const toggleActiveMutation = useMutation({
     mutationKey: ['toggle-active'],
@@ -59,6 +62,7 @@ const ImageGrid = ({
     onSearch(query);
   };
 
+
   return (
     <div className="w-full bg-background p-4">
       {/* Search bar */}
@@ -73,6 +77,30 @@ const ImageGrid = ({
           value={searchQuery}
           onChange={handleSearchChange}
         />
+      </div>
+
+      <div className="py-4 gap-3">
+        <ToggleGroup
+          variant={"outline"}
+          type="single"
+          onValueChange={(value) => setSearchParams(prev => {
+            const newParams = new URLSearchParams(prev)
+            if (value.length === 0) {
+              newParams.delete('status')
+              return newParams
+            }
+            newParams.set('status', value)
+            return newParams
+          })}
+          value={status}
+        >
+          <ToggleGroupItem value="ativo" aria-label="Toggle bold">
+            <CirclePower className="text-green-500 h-4 w-4" />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="desativado" aria-label="Toggle italic">
+            <CirclePower className="text-red-500 h-4 w-4" />
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
 
       <div

@@ -1,6 +1,6 @@
 import { api } from "./api-client";
 
-type Status = 'ATIVO' | 'DESATIVADO'
+export type Status = 'ATIVO' | 'DESATIVADO'
 
 interface Ad {
   id: string

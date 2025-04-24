@@ -7,6 +7,8 @@ import ImageGrid from "../components/image-grid";
 import CarouselPreview from "../components/corousel-preview";
 import { useQuery } from '@tanstack/react-query'
 import { fetchAds } from '@/http/fetch-ads'
+import { useSearchParams } from "react-router";
+import { Status } from "@/http/toggle-ad-active";
 
 interface Image {
   id: string;
@@ -17,10 +19,14 @@ interface Image {
 }
 
 export const HomePage = () => {
+
+  const [searchParams] = useSearchParams()
+  const status = searchParams.get('status') as Status | null
+
   const { data, isPending } = useQuery({
-    queryKey: ['ads'],
+    queryKey: ['ads', status],
     queryFn: async () => {
-      const { data } = await fetchAds()
+      const { data } = await fetchAds({ status })
 
       const images: Image[] = data.map((item, index) => ({
         active: item.status === 'ATIVO',
