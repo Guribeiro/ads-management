@@ -30,6 +30,7 @@ const ImageGrid = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [pendingId, setPendingId] = useState<string | null>(null)
 
+
   const toggleActiveMutation = useMutation({
     mutationKey: ['toggle-active'],
     onSuccess: () => {

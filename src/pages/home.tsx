@@ -17,18 +17,6 @@ interface Image {
 }
 
 export const HomePage = () => {
-
-  // Mock data for images
-  // const [images, setImages] = useState<Image[]>([
-  //   {
-  //     id: "1",
-  //     src: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&q=80",
-  //     alt: "Abstract gradient 1",
-  //     active: true,
-  //     order: 0,
-  //   },
-  // ]);
-
   const { data, isPending } = useQuery({
     queryKey: ['ads'],
     queryFn: async () => {
@@ -45,8 +33,6 @@ export const HomePage = () => {
       return images
     }
   })
-
-
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
