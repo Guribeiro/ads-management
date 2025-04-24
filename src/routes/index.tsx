@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router"
 
 import { SigninPage } from "@/pages/signin";
 import { HomePage } from "@/pages/home";
+import { AdDetails } from "@/pages/ad-details";
 import PrivateRoute from "./private-route";
 
 
@@ -19,6 +20,7 @@ export const IndexRoutes = () => {
             element={<PrivateRoute />}
           >
             <Route path="/" element={<HomePage />} />
+            <Route path="/:adId" element={<AdDetails />} />
           </Route>
         )}
 

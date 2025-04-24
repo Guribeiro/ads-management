@@ -81,12 +81,14 @@ const ImageGrid = ({
         {images.map((image) => (
           <Card key={image.id} className="overflow-hidden h-full">
             <div className="relative aspect-square overflow-hidden">
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="object-contain w-full h-full transition-opacity"
-                style={{ opacity: image.active ? 1 : 0.5 }}
-              />
+              <a href={`/${image.id}`}>
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="object-contain w-full h-full transition-opacity"
+                  style={{ opacity: image.active ? 1 : 0.5 }}
+                />
+              </a>
               <Badge
                 className="absolute top-2 right-2"
                 variant={image.active ? "default" : "outline"}
