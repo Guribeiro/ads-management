@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Search, Plus, Eye } from "lucide-react";
+import { Search, Plus, Eye, Loader2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 import ImageGrid from "../components/image-grid";
 import CarouselPreview from "../components/corousel-preview";
+import { useQuery } from '@tanstack/react-query'
+import { fetchAds } from '@/http/fetch-ads'
 
 interface Image {
   id: string;
@@ -15,85 +17,39 @@ interface Image {
 }
 
 export const HomePage = () => {
+
   // Mock data for images
-  const [images, setImages] = useState<Image[]>([
-    {
-      id: "1",
-      src: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&q=80",
-      alt: "Abstract gradient 1",
-      active: true,
-      order: 0,
-    },
-    {
-      id: "2",
-      src: "https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?w=800&q=80",
-      alt: "Abstract gradient 2",
-      active: true,
-      order: 1,
-    },
-    {
-      id: "3",
-      src: "https://images.unsplash.com/photo-1573455494060-c5595004fb6c?w=800&q=80",
-      alt: "Abstract gradient 3",
-      active: false,
-      order: 2,
-    },
-    {
-      id: "4",
-      src: "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=800&q=80",
-      alt: "Abstract gradient 4",
-      active: true,
-      order: 3,
-    },
-    {
-      id: "5",
-      src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80",
-      alt: "Abstract gradient 5",
-      active: false,
-      order: 4,
-    },
-    {
-      id: "6",
-      src: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=800&q=80",
-      alt: "Abstract gradient 6",
-      active: true,
-      order: 5,
-    },
-  ]);
+  // const [images, setImages] = useState<Image[]>([
+  //   {
+  //     id: "1",
+  //     src: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&q=80",
+  //     alt: "Abstract gradient 1",
+  //     active: true,
+  //     order: 0,
+  //   },
+  // ]);
+
+  const { data, isPending } = useQuery({
+    queryKey: ['ads'],
+    queryFn: async () => {
+      const { data } = await fetchAds()
+
+      const images: Image[] = data.map((item, index) => ({
+        active: item.status === 'ATIVO',
+        id: item.id,
+        alt: item.descricao,
+        src: item.foto,
+        order: index
+      }))
+
+      return images
+    }
+  })
+
+
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-
-  // Filter images based on search term
-  const filteredImages = images.filter((image) =>
-    image.alt.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
-
-  // Toggle image active status
-  const toggleImageActive = (id: string) => {
-    setImages(
-      images.map((image) =>
-        image.id === id ? { ...image, active: !image.active } : image,
-      ),
-    );
-  };
-
-  // Reorder images after drag and drop
-  const reorderImages = (result: any) => {
-    if (!result.destination) return;
-
-    const items = Array.from(images);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    // Update order property
-    const updatedItems = items.map((item, index) => ({
-      ...item,
-      order: index,
-    }));
-
-    setImages(updatedItems);
-  };
 
   return (
     <div className="min-h-screen bg-background p-6 flex flex-col">
@@ -126,12 +82,15 @@ export const HomePage = () => {
         </Button>
       </div>
 
-      {/* Main Content - Image Grid */}
-      <div className="flex-1">
+      <div className="flex-1 relative">
         <ImageGrid
-          images={filteredImages}
-          onReorder={reorderImages}
+          images={data}
         />
+        {isPending && (
+          <div className="absolute inset-0 flex items-center justify-center w-full rounded-md cursor-not-allowed">
+            <Loader2 className="w-6 h-6 animate-spin" />
+          </div>
+        )}
       </div>
 
       {/* Carousel Preview Dialog */}
@@ -141,7 +100,7 @@ export const HomePage = () => {
             <DialogTitle>Carousel Preview</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <CarouselPreview images={images.filter((img) => img.active)} />
+            <CarouselPreview images={data?.filter((img) => img.active)} />
           </div>
         </DialogContent>
       </Dialog>
