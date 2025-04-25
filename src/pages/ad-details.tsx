@@ -5,15 +5,30 @@ import { Switch } from "@/components/ui/switch"
 import { fetchAd } from "@/http/fetch-ad"
 import { toggleAdActive } from "@/http/toggle-ad-active"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowLeft, Loader2 } from "lucide-react"
-import { useParams, useNavigate } from "react-router"
+import { ArrowLeft, Loader2, Trash2 } from "lucide-react"
+import { useParams, useNavigate, useSearchParams } from "react-router"
 import { toast } from "sonner"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { deleteAd } from "@/http/delete-ad"
+import { useEffect } from "react"
+
 
 export const AdDetails = () => {
   const { adId } = useParams<{ adId: string }>()
 
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams()
 
+  const dialog = searchParams.get('dialog')
+
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient()
 
@@ -41,7 +56,7 @@ export const AdDetails = () => {
     mutationKey: ['toggle-active'],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ads'] })
-      queryClient.invalidateQueries({ queryKey: ['add-details', adId] });
+      queryClient.invalidateQueries({ queryKey: ['ad-details', adId] });
       toast.success('Sucesso', {
         description: 'Anúncio atualizado com sucesso',
         richColors: true
@@ -52,9 +67,44 @@ export const AdDetails = () => {
         description: message
       })
     },
-
     mutationFn: toggleAdActive
   })
+
+  const deleteMutation = useMutation({
+    mutationKey: ['toggle-active'],
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['ads'] })
+      toast.success('Sucesso', {
+        description: 'Anúncio excluído com sucesso',
+        richColors: true
+      })
+      navigate('/')
+    },
+    onError: ({ message }) => {
+      toast.error('Erro', {
+        description: message
+      })
+    },
+    mutationFn: deleteAd
+  })
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (dialog && event.key === "Escape") {
+        setSearchParams(prev => {
+          const params = new URLSearchParams(prev)
+          params.delete('dialog')
+          return params
+        })
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [dialog, setSearchParams])
 
   if (!data) return
 
@@ -65,15 +115,55 @@ export const AdDetails = () => {
   if (isPending) {
     return <h1>Loading</h1>
   }
+
   return (
-    <div className="max-w-lg w-full mx-auto pt-16">
-      <div className="flex items-center justify-between p-4 border-b bg-background sticky top-0 z-50">
+    <div className="max-w-2xl w-full mx-auto p-6">
+      <div className="flex items-center justify-between py-4  bg-background sticky">
         <Button variant="ghost" onClick={() => navigate('/')}>
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
+          Voltar
         </Button>
-        <h1 className="text-lg font-semibold">{data.alt}</h1>
-        <div className="w-8" /> {/* Spacer to balance the back button */}
+        <Dialog
+          open={dialog === 'open'}
+        >
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              onClick={() => setSearchParams(prev => {
+                const params = new URLSearchParams(prev)
+                params.set('dialog', 'open')
+                return params
+              })}
+            >
+              <Trash2 className="h-4 w-4 text-red-500" />
+            </Button>
+
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Você tem certeza?</DialogTitle>
+              <DialogDescription>A exclusão desse anúncio não poderá ser desfeita</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                variant='secondary'
+                onClick={() => setSearchParams(prev => {
+                  const params = new URLSearchParams(prev)
+                  params.delete('dialog')
+                  return params
+                })}
+              >
+                Cancelar
+              </Button>
+              {adId && (
+                <Button variant='destructive' onClick={() => deleteMutation.mutate({ adId })}>
+                  {deleteMutation.isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Confirm'}
+                </Button>
+              )}
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
       </div>
       <Card className="overflow-hidden h-full">
         <div className="relative aspect-square overflow-hidden">
