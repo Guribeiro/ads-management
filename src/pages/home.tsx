@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Search, Plus, Eye, Loader2 } from "lucide-react";
+import { Plus, Eye, Loader2 } from "lucide-react";
 import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 import ImageGrid from "../components/image-grid";
 import CarouselPreview from "../components/corousel-preview";
@@ -40,39 +39,27 @@ export const HomePage = () => {
     }
   })
 
-  const [searchTerm, setSearchTerm] = useState("");
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background p-6 flex flex-col">
-      {/* Header */}
+    <div>
       <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Image Carousel Management</h1>
-        <Button
-          onClick={() => setIsPreviewOpen(true)}
-          className="flex items-center gap-2"
-        >
-          <Eye size={16} />
-          Preview Carousel
-        </Button>
-      </header>
 
-      {/* Search and Filter Bar */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search images..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+        <h1 className="text-2xl font-bold">Image Carousel Management</h1>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => setIsPreviewOpen(true)}
+            className="flex items-center gap-2 text-foreground"
+          >
+            <Eye size={16} />
+            Preview Carousel
+          </Button>
+          <Button variant="outline" className="flex items-center gap-2">
+            <Plus size={16} />
+            Add New Image
+          </Button>
         </div>
-        <Button variant="outline" className="flex items-center gap-2">
-          <Plus size={16} />
-          Add New Image
-        </Button>
-      </div>
+      </header>
 
       <div className="flex-1 relative">
         <ImageGrid

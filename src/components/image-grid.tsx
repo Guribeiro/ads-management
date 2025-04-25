@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,10 @@ import { toggleAdActive } from "@/http/toggle-ad-active";
 import { toast } from "sonner";
 import { useSearchParams } from "react-router";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { z } from 'zod'
+import { useForm, Controller } from "react-hook-form";
+
+import { zodResolver } from '@hookform/resolvers/zod'
 
 export interface Image {
   id: string;
@@ -23,15 +27,29 @@ interface ImageGridProps {
   onSearch?: (query: string) => void;
 }
 
+
+const searchSchema = z.object({
+  search: z.string()
+})
+
+type SearchForm = z.infer<typeof searchSchema>
+
 const ImageGrid = ({
   images = [],
-  onSearch = () => { },
 }: ImageGridProps) => {
   const queryClient = useQueryClient()
   const [searchParams, setSearchParams] = useSearchParams()
-  const status = searchParams.get('status') || 'all'
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const status = searchParams.get('status') || 'all'
+  const search = searchParams.get('search') || ''
+
+  const { control, handleSubmit } = useForm<SearchForm>({
+    resolver: zodResolver(searchSchema),
+    defaultValues: {
+      search
+    }
+  })
+
   const [pendingId, setPendingId] = useState<string | null>(null)
 
   const toggleActiveMutation = useMutation({
@@ -56,30 +74,55 @@ const ImageGrid = ({
   })
 
   // Handle search input change
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    onSearch(query);
+  const handleSubmitSearch = ({ search }: SearchForm) => {
+
+    if (search.length < 1) {
+      setSearchParams(prev => {
+        const params = new URLSearchParams(prev)
+        params.delete('search')
+        return params
+      })
+    }
+
+    setSearchParams(prev => {
+      const params = new URLSearchParams(prev)
+      params.set('search', search)
+      return params
+    })
   };
+
+  const ads = useMemo(() => {
+    if (!search || search.length < 1) return images
+
+    return images.filter(image => image.alt.toUpperCase().includes(search.toUpperCase()))
+  }, [images, search])
 
 
   return (
     <div className="w-full bg-background p-4">
       {/* Search bar */}
       <div className="relative mb-6">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <Search className="h-4 w-4 text-muted-foreground" />
-        </div>
-        <Input
-          type="text"
-          placeholder="Search images..."
-          className="pl-10"
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
+        <form onSubmit={handleSubmit(handleSubmitSearch)}>
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <Search className="h-4 w-4 text-muted-foreground" />
+          </div>
+          <Controller
+            control={control}
+            name="search"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Search images..."
+                className="pl-10"
+                value={value}
+                onChange={onChange}
+              />
+            )}
+          />
+
+        </form>
       </div>
 
-      <div className="py-4 gap-3">
+      <div className="py-4 gap-3 flex justify-end">
         <ToggleGroup
           variant={"outline"}
           type="single"
@@ -94,10 +137,12 @@ const ImageGrid = ({
           })}
           value={status}
         >
-          <ToggleGroupItem value="ativo" aria-label="Toggle bold">
+          <ToggleGroupItem className="px-4 hover:border-primary" value="ativo" aria-label="Toggle bold">
+            Ativado
             <CirclePower className="text-green-500 h-4 w-4" />
           </ToggleGroupItem>
-          <ToggleGroupItem value="desativado" aria-label="Toggle italic">
+          <ToggleGroupItem className="px-4 hover:border-destructive" value="desativado" aria-label="Toggle italic">
+            Desativado
             <CirclePower className="text-red-500 h-4 w-4" />
           </ToggleGroupItem>
         </ToggleGroup>
@@ -106,8 +151,8 @@ const ImageGrid = ({
       <div
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
-        {images.map((image) => (
-          <Card key={image.id} className="overflow-hidden h-full">
+        {ads.map((image) => (
+          <Card key={image.id} className="overflow-hidden h-full hover:border-primary border-4 transition">
             <div className="relative aspect-square overflow-hidden">
               <a href={`/${image.id}`}>
                 <img
@@ -119,17 +164,14 @@ const ImageGrid = ({
               </a>
               <Badge
                 className="absolute top-2 right-2"
-                variant={image.active ? "default" : "outline"}
+                variant={image.active ? "default" : "destructive"}
               >
-                {image.active ? "Active" : "Inactive"}
+                {image.active ? "Ativo" : "Desativado"}
               </Badge>
             </div>
-            <CardContent className="p-4 flex justify-between items-center">
-              <div className="text-sm truncate">{image.alt}</div>
-              <div className="flex items-center space-x-2">
-                <span className="text-xs text-muted-foreground">
-                  {image.active ? "On" : "Off"}
-                </span>
+            <CardContent className="p-4">
+              <p className="text-sm truncate">{image.alt}</p>
+              <div className=" mt-4 flex items-center justify-end space-x-2">
                 <div className="relative w-fit">
                   <Switch
                     checked={image.active}
