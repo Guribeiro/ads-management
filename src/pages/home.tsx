@@ -18,7 +18,6 @@ interface Image {
 }
 
 export const HomePage = () => {
-
   const [searchParams] = useSearchParams()
   const status = searchParams.get('status') as Status | null
 
