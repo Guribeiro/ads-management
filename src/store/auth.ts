@@ -9,25 +9,33 @@ interface SigninDTO {
   password: string
 }
 
-interface AuthState {
+type Auth = {
+  token: string
   user: {
-    id: number | string
+    admin: boolean
+    id: number
+    iddepartamento: number
     name: string
-  } | null,
+  }
+}
+
+interface AuthState {
+  auth: Auth | null,
   loading: boolean
   signin: (data: SigninDTO) => Promise<void>
+  signout: () => void
 }
 
 export const authSlice = create<AuthState>()(
   persist((set) => ({
-    user: null,
+    auth: null,
     loading: false,
     signin: async ({ email, password }) => {
       try {
         set({ loading: true })
         const { data } = await authenticateUser({ email, password })
 
-        set({ user: data })
+        set({ auth: data })
       } catch (error) {
         const message = handleAxiosError(error)
         toast.error(message)
@@ -35,9 +43,12 @@ export const authSlice = create<AuthState>()(
         set({ loading: false })
       }
     },
+    signout: () => {
+      set({ auth: null })
+    }
   }),
     {
-      name: 'food-storage', // name of the item in the storage (must be unique)
+      name: 'auth-storage', // name of the item in the storage (must be unique)
       storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   )

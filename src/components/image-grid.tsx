@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { CirclePower, Loader2, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toggleAdActive } from "@/http/toggle-ad-active";
+import { Status, toggleAdActive } from "@/http/toggle-ad-active";
 import { toast } from "sonner";
 import { useSearchParams } from "react-router";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
@@ -40,7 +40,7 @@ const ImageGrid = ({
   const queryClient = useQueryClient()
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const status = searchParams.get('status') || 'all'
+  const status = searchParams.get('status') as Status | null || 'ATIVO'
   const search = searchParams.get('search') || ''
 
   const { control, handleSubmit } = useForm<SearchForm>({
@@ -100,7 +100,6 @@ const ImageGrid = ({
 
   return (
     <div className="w-full bg-background p-4">
-      {/* Search bar */}
       <div className="relative mb-6">
         <form onSubmit={handleSubmit(handleSubmitSearch)}>
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

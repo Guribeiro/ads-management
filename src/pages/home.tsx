@@ -44,19 +44,22 @@ export const HomePage = () => {
   return (
     <div>
       <header className="flex justify-between items-center mb-6">
-
-        <h1 className="text-2xl font-bold">Image Carousel Management</h1>
+        <h1 className="text-2xl font-bold">Anúncios Sorocaps</h1>
         <div className="flex gap-2">
           <Button
             onClick={() => setIsPreviewOpen(true)}
             className="flex items-center gap-2 text-foreground"
           >
             <Eye size={16} />
-            Preview Carousel
+            <span className="hidden md:block ">
+              Preview Carousel
+            </span>
           </Button>
           <Button variant="outline" className="flex items-center gap-2">
             <Plus size={16} />
-            Add New Image
+            <span className="hidden md:block ">
+              Add New Image
+            </span>
           </Button>
         </div>
       </header>

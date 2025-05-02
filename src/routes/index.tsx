@@ -7,11 +7,11 @@ import { AdDetails } from "@/pages/ad-details";
 import PrivateRoute from "./private-route";
 
 export const IndexRoutes = () => {
-  const { user } = authSlice(state => state)
+  const { auth } = authSlice(state => state)
   return (
     <BrowserRouter>
       <Routes>
-        {!user ? (
+        {!auth ? (
           <Route path="/" element={<SigninPage />} />
         ) : (
           <Route
@@ -22,7 +22,7 @@ export const IndexRoutes = () => {
           </Route>
         )}
 
-        <Route path="*" element={<Navigate to={user ? '/dashboard' : '/'} />} />
+        <Route path="*" element={<Navigate to={auth ? '/dashboard' : '/'} />} />
       </Routes>
     </BrowserRouter>
   )

@@ -3,11 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { authSlice } from "@/store/auth"
-import { Loader2 } from "lucide-react"
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from 'zod'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createElement, useState } from "react"
 
 const formSchema = z.object({
   email: z.string(),
@@ -18,6 +19,8 @@ const formSchema = z.object({
 
 export const SigninPage = () => {
   const { loading, signin } = authSlice(state => state)
+
+  const [passwordVisibility, setPasswordVisibility] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,7 +40,7 @@ export const SigninPage = () => {
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your email and password to login to your account.
+            Preencha com seu usuário e senha para acessar sua conta.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -67,22 +70,27 @@ export const SigninPage = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem className="grid gap-2">
-                      <div className="flex justify-between items-center">
-                        <FormLabel htmlFor="password">Password</FormLabel>
-                        <a
-                          href="#"
-                          className="ml-auto inline-block text-sm underline"
-                        >
-                          Forgot your password?
-                        </a>
-                      </div>
+                      <FormLabel htmlFor="password">Senha</FormLabel>
                       <FormControl>
-                        <Input
-                          id="password"
-                          placeholder="******"
-                          autoComplete="current-password"
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            id="password"
+                            placeholder="******"
+                            type={passwordVisibility ? "text" : "password"}
+                            autoComplete="current-password"
+                            {...field}
+                          />
+                          <Button
+                            type="button"
+                            variant={"link"}
+                            className="absolute inset-y-0 right-0 flex cursor-pointer items-center p-3 text-muted-foreground"
+                            onClick={() => setPasswordVisibility(!passwordVisibility)}
+                          >
+                            {createElement(passwordVisibility ? EyeOffIcon : EyeIcon, {
+                              className: "h-6 w-6",
+                            })}
+                          </Button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
