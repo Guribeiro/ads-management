@@ -55,11 +55,13 @@ export const HomePage = () => {
               Preview Carousel
             </span>
           </Button>
-          <Button variant="outline" className="flex items-center gap-2">
-            <Plus size={16} />
-            <span className="hidden md:block ">
-              Add New Image
-            </span>
+          <Button variant="outline" asChild className="flex items-center gap-2">
+            <a href="/new">
+              <Plus size={16} />
+              <span className="hidden md:block ">
+                Add New Image
+              </span>
+            </a>
           </Button>
         </div>
       </header>
@@ -75,7 +77,6 @@ export const HomePage = () => {
         )}
       </div>
 
-      {/* Carousel Preview Dialog */}
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>

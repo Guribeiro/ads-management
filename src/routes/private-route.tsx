@@ -2,8 +2,6 @@ import { Header } from '@/components/header';
 import { authSlice } from '@/store/auth';
 import { Navigate, useLocation, Outlet } from 'react-router';
 
-
-
 function PrivateRoute() {
   const { state } = useLocation();
   const { auth } = authSlice(state => state)

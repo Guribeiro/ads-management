@@ -36,7 +36,7 @@ export function ProfileButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild >
-          <Button className='cursor-pointer w-full' variant={'destructive'} onClick={signout}>
+          <Button className='w-full' variant={'destructive'} onClick={signout}>
             <LogOut className="mr-2 size-4" />
             Sair
           </Button>
