@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Eye, Loader2 } from "lucide-react";
+import { Plus, Eye, Loader2, GalleryThumbnails } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 import ImageGrid from "../components/image-grid";
@@ -44,22 +44,35 @@ export const HomePage = () => {
   return (
     <div>
       <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Anúncios Sorocaps</h1>
+        <h1 className="text-md lg:text-xl font-bold">Anúncios Sorocaps</h1>
         <div className="flex gap-2">
           <Button
+            variant='outline'
+            asChild
+            className="flex items-center gap-2"
+          >
+            <a href="/carousel">
+              <GalleryThumbnails size={16} />
+              <span className="hidden md:block ">
+                Carrossel
+              </span>
+            </a>
+          </Button>
+          <Button
+            variant='outline'
             onClick={() => setIsPreviewOpen(true)}
             className="flex items-center gap-2 text-foreground"
           >
             <Eye size={16} />
             <span className="hidden md:block ">
-              Preview Carousel
+              Preview do carrossel
             </span>
           </Button>
-          <Button variant="outline" asChild className="flex items-center gap-2">
+          <Button asChild className="flex items-center gap-2">
             <a href="/new">
-              <Plus size={16} />
-              <span className="hidden md:block ">
-                Add New Image
+              <Plus size={16} className="text-foreground" />
+              <span className="hidden md:block text-foreground ">
+                Adicionar nova publicação
               </span>
             </a>
           </Button>

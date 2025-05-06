@@ -17,18 +17,19 @@ import { fileToBase64 } from "@/utils/file-to-base64"
 import { useNavigate } from "react-router"
 
 const createAdFormSchema = z.object({
-  description: z.string().min(1),
+  description: z.string().min(1, 'Adicione uma descrição para a publicação'),
   file: z.instanceof(FileList)
     .nullable() // Allows the initial value to be null
     .refine(
       (fileList) => fileList === null || (fileList && fileList.length > 0),
       {
-        message: "File is required. Please select a file.",
+        message: "Selecione uma imagem",
       }
     ),
 })
 
 export const CreateAdPage = () => {
+
   const queryClient = useQueryClient()
 
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ export const CreateAdPage = () => {
 
     mutationFn: createAd
   })
+
 
   const form = useForm<z.infer<typeof createAdFormSchema>>({
     resolver: zodResolver(createAdFormSchema),
@@ -109,7 +111,6 @@ export const CreateAdPage = () => {
                 <FormControl>
                   <Input
                     id="description"
-                    placeholder="johndoe@mail.com"
                     autoComplete="email"
                     {...field}
                   />

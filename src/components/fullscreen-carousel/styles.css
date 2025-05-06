@@ -1,0 +1,84 @@
+.fullscreen-carousel-container {
+  position: fixed; /* Ou 'absolute' se relativo a um container específico */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Esconder barras de rolagem */
+  background-color: #000; /* Cor de fundo caso as imagens não carreguem imediatamente */
+}
+
+.carousel-slide {
+  width: 100%;
+  height: 100vh;
+  outline: none; /* Remover outline do slick-slider */
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill; 
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 50px; /* Ajuste conforme necessário */
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Estilizando os dots (opcional) */
+.slick-dots {
+  bottom: 25px; /* Posição dos dots */
+}
+
+.slick-dots li button:before {
+  font-size: 12px; /* Tamanho dos dots */
+  color: white; /* Cor dos dots */
+  opacity: 0.75;
+}
+
+.slick-dots li.slick-active button:before {
+  color: white; /* Cor do dot ativo */
+  opacity: 1;
+}
+
+/* Animação de fade (já configurada com `fade: true` no JS) */
+.slick-slide {
+  transition: opacity 1s ease-in-out; /* Corresponde ao `speed` no JS */
+}
+
+.slick-active {
+  opacity: 1;
+}
+
+.slick-slide:not(.slick-active) {
+  opacity: 0;
+}
+
+/* Você pode adicionar animações mais complexas aqui.
+   Por exemplo, um efeito Ken Burns (zoom sutil e panorâmica):
+*/
+.slick-active img {
+  animation: kenburns 20s ease-out infinite alternate; /* Ajuste a duração da animação */
+}
+
+@keyframes kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.1) translate(-2%, 2%); /* Ajuste o zoom e a translação */
+  }
+}
+
+/* Se quiser remover as setas de navegação padrão */
+.slick-prev,
+.slick-next {
+  /* display: none !important; */ /* Descomente para esconder */
+}

@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router"
 import { SigninPage } from "@/pages/signin";
 import { HomePage } from "@/pages/home";
 import { AdDetails } from "@/pages/ad-details";
+import { Carousel } from "@/pages/carousel";
 import { CreateAdPage } from '@/pages/create-ad'
 import PrivateRoute from "./private-route";
 
@@ -25,6 +26,7 @@ export const IndexRoutes = () => {
             <Route element={<CreateAdLayout />} >
               <Route path="/new" element={<CreateAdPage />} />
             </Route>
+            <Route path="/carousel" element={<Carousel />} />
           </Route>
         )}
 

@@ -1,10 +1,4 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+
 import {
   Carousel,
   CarouselContent,
@@ -12,7 +6,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface Image {
@@ -48,7 +41,7 @@ const CarouselPreview = ({
                         <img
                           src={image.src}
                           alt={image.alt}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-fill"
                         />
                       </AspectRatio>
                     </div>
