@@ -9,6 +9,7 @@ import { Image } from '../image-grid';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { Terminal } from 'lucide-react';
 
+const ONE_MINUTE_IN_MILISECONDS = 60000
 
 const FullscreenCarousel = () => {
   const sliderRef = useRef<Slider>(null);
@@ -20,7 +21,7 @@ const FullscreenCarousel = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true, // Ativar autoplay
-    autoplaySpeed: 5000, // Duração padrão se não especificada
+    autoplaySpeed: ONE_MINUTE_IN_MILISECONDS, // Duração padrão se não especificada
     fade: true, // Usar fade para a transição (pode escolher outras)
     cssEase: 'linear', // Tipo de easing para a animação
   };

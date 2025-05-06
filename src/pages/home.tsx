@@ -93,7 +93,7 @@ export const HomePage = () => {
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>
-            <DialogTitle>Carousel Preview</DialogTitle>
+            <DialogTitle>Preview do carrossel</DialogTitle>
           </DialogHeader>
           <div className="py-4">
             <CarouselPreview images={data?.filter((img) => img.active)} />
