@@ -13,8 +13,9 @@ export function CreateAdLayout() {
         </Button>
 
         <h2 className="text-2xl font-bold">Novo anúncio</h2>
-
-        <Outlet />
+        <div className='mt-4'>
+          <Outlet />
+        </div>
       </div>
     </div>
   )

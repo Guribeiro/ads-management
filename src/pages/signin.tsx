@@ -7,6 +7,8 @@ import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from 'zod'
 
+import logo from '@/assets/logo.png'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createElement, useState } from "react"
 
@@ -37,6 +39,7 @@ export const SigninPage = () => {
   return (
     <div className="bg-gradient-to-b from-primary to-secondary flex flex-col min-h-screen justify-center h-full w-full px-4">
       <Card className="mx-auto min-w-sm">
+        <img src={logo} className="w-52 m-auto" alt="Sorocaps" />
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
