@@ -10,12 +10,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Status, toggleAdActive } from "@/http/toggle-ad-active";
 
-import { Loading } from "./loading";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { ImageListSkeleton } from "./ad-card-skeleton";
 
 
 export interface Image {
@@ -79,7 +79,6 @@ const ImageGrid = ({
     mutationFn: toggleAdActive
   })
 
-  // Handle search input change
   const handleSubmitSearch = ({ search }: SearchForm) => {
 
     if (search.length < 1) {
@@ -153,15 +152,7 @@ const ImageGrid = ({
         </ToggleGroup>
       </div>
 
-      {loading && (
-        <div className="flex flex-col items-center justify-center p-8 text-center">
-          <Loading />
-          <div className="text-muted-foreground mb-2">Buscando anúncios...</div>
-          <p className="text-sm text-muted-foreground">
-            Aguarde enquanto finalizamos a sua busca
-          </p>
-        </div>
-      )}
+      {loading && <ImageListSkeleton count={6} />}
 
       <div
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4"
