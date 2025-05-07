@@ -13,10 +13,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createElement, useState } from "react"
 
 const formSchema = z.object({
-  email: z.string(),
+  email: z.string().min(1, 'Informe seu usuário'),
   password: z
     .string()
-    .min(3, { message: 'Password must be at least 3 characters long' })
+    .min(3, { message: 'Informe sua senha' })
 })
 
 export const SigninPage = () => {
@@ -55,7 +55,7 @@ export const SigninPage = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem className="grid gap-2">
-                      <FormLabel htmlFor="email">Email</FormLabel>
+                      <FormLabel htmlFor="email">Usuário</FormLabel>
                       <FormControl>
                         <Input
                           id="email"
@@ -105,12 +105,6 @@ export const SigninPage = () => {
               </div>
             </form>
           </Form>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{' '}
-            <a href="#" className="underline">
-              Sign up
-            </a>
-          </div>
         </CardContent>
       </Card>
     </div>

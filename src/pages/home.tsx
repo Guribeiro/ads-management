@@ -23,6 +23,7 @@ export const HomePage = () => {
 
   const { data, isPending } = useQuery({
     queryKey: ['ads', status],
+    networkMode: 'offlineFirst',
     queryFn: async () => {
       const { data } = await fetchAds({ status })
 
