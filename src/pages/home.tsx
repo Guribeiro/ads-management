@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Eye, Loader2, GalleryThumbnails } from "lucide-react";
+import { Plus, Eye, GalleryThumbnails } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 import ImageGrid from "../components/image-grid";
