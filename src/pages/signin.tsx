@@ -38,7 +38,7 @@ export const SigninPage = () => {
 
   return (
     <div className="bg-gradient-to-b from-primary to-secondary flex flex-col min-h-screen justify-center h-full w-full px-4">
-      <Card className="mx-auto min-w-sm">
+      <Card className="mx-auto max-w-md w-full">
         <img src={logo} className="w-52 m-auto" alt="Sorocaps" />
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>

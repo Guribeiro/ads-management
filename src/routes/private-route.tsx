@@ -11,7 +11,7 @@ function PrivateRoute() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6 flex flex-col">
+    <div className="min-h-screen max-w-7xl w-full mx-auto bg-background p-4 flex flex-col">
       <Header />
       <Outlet />
     </div>

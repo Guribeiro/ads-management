@@ -24,7 +24,7 @@ export function CreateAdLayout() {
   }, [navigate]);
 
   return (
-    <div className="bg-background p-6 flex flex-col">
+    <div className="bg-background p-2 flex flex-col">
       <div className='my-8 max-w-lg w-full mx-auto'>
         <Button variant="ghost" className='my-4' onClick={() => navigate('/')}>
           <ArrowLeft className="mr-2 h-4 w-4" />
