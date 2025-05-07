@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { ComponentProps, useRef } from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -11,10 +11,12 @@ import { Terminal } from 'lucide-react';
 
 const ONE_MINUTE_IN_MILISECONDS = 60000
 
+type SliderProps = ComponentProps<typeof Slider>
+
 const FullscreenCarousel = () => {
   const sliderRef = useRef<Slider>(null);
 
-  const settings = {
+  const settings: SliderProps = {
     dots: true, // Mostrar indicadores de pontos
     infinite: true, // Loop infinito
     speed: 1000, // Velocidade da animação de transição em ms
