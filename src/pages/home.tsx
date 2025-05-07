@@ -79,16 +79,10 @@ export const HomePage = () => {
         </div>
       </header>
 
-      <div className="flex-1 relative">
-        <ImageGrid
-          images={data}
-        />
-        {isPending && (
-          <div className="absolute inset-0 flex items-center justify-center w-full rounded-md cursor-not-allowed">
-            <Loader2 className="w-6 h-6 animate-spin" />
-          </div>
-        )}
-      </div>
+      <ImageGrid
+        loading={isPending}
+        images={data}
+      />
 
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="max-w-4xl">

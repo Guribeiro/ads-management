@@ -13,6 +13,7 @@ import { z } from 'zod'
 import { useForm, Controller } from "react-hook-form";
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Loading } from "./loading";
 
 export interface Image {
   id: string;
@@ -24,6 +25,7 @@ export interface Image {
 
 interface ImageGridProps {
   images?: Image[];
+  loading: boolean;
   onSearch?: (query: string) => void;
 }
 
@@ -36,6 +38,7 @@ type SearchForm = z.infer<typeof searchSchema>
 
 const ImageGrid = ({
   images = [],
+  loading = false
 }: ImageGridProps) => {
   const queryClient = useQueryClient()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -147,6 +150,16 @@ const ImageGrid = ({
         </ToggleGroup>
       </div>
 
+      {loading && (
+        <div className="flex flex-col items-center justify-center p-8 text-center">
+          <Loading />
+          <div className="text-muted-foreground mb-2">Buscando anúncios...</div>
+          <p className="text-sm text-muted-foreground">
+            Aguarde enquanto finalizamos a sua busca
+          </p>
+        </div>
+      )}
+
       <div
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
@@ -192,11 +205,12 @@ const ImageGrid = ({
           </Card>
         ))}
       </div>
-      {images.length === 0 && (
+
+      {images.length === 0 && !loading && (
         <div className="flex flex-col items-center justify-center p-8 text-center">
-          <div className="text-muted-foreground mb-2">No images found</div>
+          <div className="text-muted-foreground mb-2">Não foram encontrados anúncios</div>
           <p className="text-sm text-muted-foreground">
-            Try adjusting your search or add new images to the carousel.
+            Tente ajustar os filtros de busca ou adicionar novos anúncios ao carrossel
           </p>
         </div>
       )}
