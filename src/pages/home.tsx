@@ -54,7 +54,7 @@ export const HomePage = () => {
         <TooltipProvider>
           <div className="flex gap-2">
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild >
                 <Button
                   variant='outline'
                   asChild
@@ -75,7 +75,7 @@ export const HomePage = () => {
               </TooltipContent>
             </Tooltip>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild >
                 <Button
                   variant='outline'
                   onClick={() => setIsPreviewOpen(true)}
@@ -95,7 +95,7 @@ export const HomePage = () => {
             </Tooltip>
 
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild >
                 <Button asChild className="flex items-center gap-2">
                   <a href="/new">
                     <Plus size={16} className="text-foreground" />

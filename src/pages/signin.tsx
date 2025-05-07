@@ -59,7 +59,6 @@ export const SigninPage = () => {
                       <FormControl>
                         <Input
                           id="email"
-                          placeholder="johndoe@mail.com"
                           autoComplete="email"
                           {...field}
                         />
