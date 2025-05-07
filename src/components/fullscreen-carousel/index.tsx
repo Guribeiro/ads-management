@@ -9,7 +9,9 @@ import { Image } from '../image-grid';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { Terminal } from 'lucide-react';
 
+const INTERVAL_IN_MINUTES = 30
 const ONE_MINUTE_IN_MILISECONDS = 60000
+const REFETCH_INTERVAL_IN_MILISECONDS = ONE_MINUTE_IN_MILISECONDS * INTERVAL_IN_MINUTES
 
 type SliderProps = ComponentProps<typeof Slider>
 
@@ -32,6 +34,7 @@ const FullscreenCarousel = () => {
   const { data, isPending, error } = useQuery({
     initialData: [],
     queryKey: ['active-ads'],
+    refetchInterval: REFETCH_INTERVAL_IN_MILISECONDS,
     queryFn: async () => {
       const { data } = await fetchAds({ status: 'ATIVO' })
 
