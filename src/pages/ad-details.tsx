@@ -19,9 +19,10 @@ import {
 } from "@/components/ui/dialog"
 import { deleteAd } from "@/http/delete-ad"
 import { useEffect } from "react"
-
+import useEscapeToNavigateBack from "@/hooks/useScapeToNavigateBack"
 
 export const AdDetails = () => {
+  useEscapeToNavigateBack()
   const { adId } = useParams<{ adId: string }>()
 
   const [searchParams, setSearchParams] = useSearchParams()

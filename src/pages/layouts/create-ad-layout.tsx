@@ -1,27 +1,12 @@
 import { Button } from '@/components/ui/button';
+import useEscapeToNavigateBack from '@/hooks/useScapeToNavigateBack';
 import { ArrowLeft } from 'lucide-react';
-import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 
 export function CreateAdLayout() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        navigate(-1); // Navigates to the previous page in history
-        // This is the standard way to go back.
-      }
-    };
-
-    // Add event listener when the component mounts
-    document.addEventListener('keydown', handleEsc);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      document.removeEventListener('keydown', handleEsc);
-    };
-  }, [navigate]);
+  useEscapeToNavigateBack()
 
   return (
     <div className="bg-background p-2 flex flex-col">
