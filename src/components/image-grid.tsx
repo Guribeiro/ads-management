@@ -115,7 +115,7 @@ const ImageGrid = ({
             name="search"
             render={({ field: { onChange, value } }) => (
               <Input
-                placeholder="Search images..."
+                placeholder="Buscar anúncio..."
                 className="pl-10"
                 value={value}
                 onChange={onChange}
