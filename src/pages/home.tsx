@@ -68,9 +68,9 @@ export const HomePage = () => {
                   </a>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent side="bottom">
                 <p className="text-foreground leading-7 [&:not(:first-child)]:mt-6">
-                  Ver carrossel
+                  Ir para o carrossel
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -87,9 +87,9 @@ export const HomePage = () => {
                   </span>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent side="bottom">
                 <p className="text-foreground leading-7 [&:not(:first-child)]:mt-6">
-                  Ver preview do carrossel
+                  Abrir preview do carrossel
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -105,9 +105,9 @@ export const HomePage = () => {
                   </a>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent side="bottom">
                 <p className="text-foreground leading-7 [&:not(:first-child)]:mt-6">
-                  Adicione um novo anúncio
+                  Ir para adicionar um novo anúncio
                 </p>
               </TooltipContent>
             </Tooltip>
