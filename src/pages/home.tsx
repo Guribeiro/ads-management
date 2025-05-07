@@ -8,6 +8,12 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchAds } from '@/http/fetch-ads'
 import { useSearchParams } from "react-router";
 import { Status } from "@/http/toggle-ad-active";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface Image {
   id: string;
@@ -45,38 +51,69 @@ export const HomePage = () => {
     <div>
       <header className="flex justify-between items-center mb-6">
         <h1 className="text-md lg:text-xl font-bold">Anúncios Sorocaps</h1>
-        <div className="flex gap-2">
-          <Button
-            variant='outline'
-            asChild
-            className="flex items-center gap-2"
-          >
-            <a href="/carousel">
-              <GalleryThumbnails size={16} />
-              <span className="hidden md:block ">
-                Carrossel
-              </span>
-            </a>
-          </Button>
-          <Button
-            variant='outline'
-            onClick={() => setIsPreviewOpen(true)}
-            className="flex items-center gap-2 text-foreground"
-          >
-            <Eye size={16} />
-            <span className="hidden md:block ">
-              Preview do carrossel
-            </span>
-          </Button>
-          <Button asChild className="flex items-center gap-2">
-            <a href="/new">
-              <Plus size={16} className="text-foreground" />
-              <span className="hidden md:block text-foreground ">
-                Adicionar nova publicação
-              </span>
-            </a>
-          </Button>
-        </div>
+        <TooltipProvider>
+          <div className="flex gap-2">
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant='outline'
+                  asChild
+                  className="flex items-center gap-2"
+                >
+                  <a href="/carousel">
+                    <GalleryThumbnails size={16} />
+                    <span className="hidden md:block ">
+                      Carrossel
+                    </span>
+                  </a>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-foreground leading-7 [&:not(:first-child)]:mt-6">
+                  Ver carrossel
+                </p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant='outline'
+                  onClick={() => setIsPreviewOpen(true)}
+                  className="flex items-center gap-2 text-foreground cursor-pointer"
+                >
+                  <Eye size={16} />
+                  <span className="hidden md:block ">
+                    Preview do carrossel
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-foreground leading-7 [&:not(:first-child)]:mt-6">
+                  Ver preview do carrossel
+                </p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger>
+                <Button asChild className="flex items-center gap-2">
+                  <a href="/new">
+                    <Plus size={16} className="text-foreground" />
+                    <span className="hidden md:block text-foreground ">
+                      Adicionar nova publicação
+                    </span>
+                  </a>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-foreground leading-7 [&:not(:first-child)]:mt-6">
+                  Adicione um novo anúncio
+                </p>
+              </TooltipContent>
+            </Tooltip>
+
+          </div>
+        </TooltipProvider>
       </header>
 
       <ImageGrid
