@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 
 export const handleAxiosError = (error: any): string => {
   if (axios.isAxiosError(error)) {
-    const axiosError = error as AxiosError;
+    const axiosError = error as AxiosError<{ message: string }>;
     if (axiosError.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
