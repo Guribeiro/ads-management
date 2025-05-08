@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: 'http://localhost:2018',
+  baseURL: process.env.VITE_API_URL,
 })
