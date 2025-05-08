@@ -77,6 +77,9 @@ importers:
       framer-motion:
         specifier: ^12.10.1
         version: 12.10.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      js-function-reflector:
+        specifier: ^2.0.3
+        version: 2.0.3
       lucide-react:
         specifier: ^0.488.0
         version: 0.488.0(react@19.1.0)
@@ -1785,6 +1788,9 @@ packages:
 
   jquery@3.7.1:
     resolution: {integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==}
+
+  js-function-reflector@2.0.3:
+    resolution: {integrity: sha512-n0LBEGEMJ7p5t0HIrMxNaUk5yJ64V8yshJfEFBKC4fG+YulsucBM+9pOkQgh1PrmDnOeH1vJrTOrbpAPG1ofyg==}
 
   js-function-reflector@git+https://git@github.com:leonardiwagner/js-function-reflector.git#f3a1295909cf870bbb7bb136ca53796fc3e87c17:
     resolution: {commit: f3a1295909cf870bbb7bb136ca53796fc3e87c17, repo: git@github.com:leonardiwagner/js-function-reflector.git, type: git}
@@ -3933,6 +3939,8 @@ snapshots:
   jiti@2.4.2: {}
 
   jquery@3.7.1: {}
+
+  js-function-reflector@2.0.3: {}
 
   js-function-reflector@git+https://git@github.com:leonardiwagner/js-function-reflector.git#f3a1295909cf870bbb7bb136ca53796fc3e87c17: {}
 
