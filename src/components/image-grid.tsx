@@ -17,6 +17,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { ImageListSkeleton } from "./ad-card-skeleton";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 
 export interface Image {
   id: string;
@@ -32,6 +40,7 @@ interface ImageGridProps {
   onSearch?: (query: string) => void;
 }
 
+const pageSizeOptions = [10, 20, 50, 100];
 
 const searchSchema = z.object({
   search: z.string()
@@ -48,6 +57,7 @@ const ImageGrid = ({
 
   const status = searchParams.get('status') as Status | null || 'ATIVO'
   const search = searchParams.get('search') || ''
+  const limit = searchParams.get('limit') || 10
 
   const { control, handleSubmit } = useForm<SearchForm>({
     resolver: zodResolver(searchSchema),
@@ -78,6 +88,14 @@ const ImageGrid = ({
     },
     mutationFn: toggleAdActive
   })
+
+  const handleChangePageLimit = (limit: string) => {
+    setSearchParams(prev => {
+      const params = new URLSearchParams(prev)
+      params.set('limit', limit)
+      return params
+    })
+  }
 
   const handleSubmitSearch = ({ search }: SearchForm) => {
 
@@ -150,6 +168,18 @@ const ImageGrid = ({
             <CirclePower className="text-red-500 h-4 w-4" />
           </ToggleGroupItem>
         </ToggleGroup>
+        <Select onValueChange={handleChangePageLimit} value={limit.toString()}>
+          <SelectTrigger className="h-8 w-[70px]">
+            <SelectValue placeholder={limit} />
+          </SelectTrigger>
+          <SelectContent>
+            {pageSizeOptions.map((size) => (
+              <SelectItem key={size} value={size.toString()}>
+                {size}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {loading && <ImageListSkeleton count={6} />}

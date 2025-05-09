@@ -14,6 +14,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 interface Image {
   id: string;
@@ -24,16 +32,22 @@ interface Image {
 }
 
 export const HomePage = () => {
-  const [searchParams] = useSearchParams()
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams()
   const status = searchParams.get('status') as Status | null
+  const page = searchParams.get('page') || 1
+  const limit = searchParams.get('limit') || 10
 
   const { data, isPending } = useQuery({
-    queryKey: ['ads', status],
-    networkMode: 'offlineFirst',
+    queryKey: ['ads', status, page, limit],
+    initialData: { ads: [], nextPage: null },
     queryFn: async () => {
-      const { data } = await fetchAds({ status })
+      const { data } = await fetchAds({ status, limit, page })
 
-      const images: Image[] = data.map((item, index) => ({
+      const { ads, nextPage } = data
+
+      const adsParsed: Image[] = ads.map((item, index) => ({
         active: item.status === 'ATIVO',
         id: item.id,
         alt: item.descricao,
@@ -41,16 +55,33 @@ export const HomePage = () => {
         order: index
       }))
 
-      return images
+      return { ads: adsParsed, nextPage }
     }
   })
 
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const handlePreviousPage = () => {
+    if (Number(page) > 1) {
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set('page', (Number(page) - 1).toString());
+      setSearchParams(newSearchParams);
+    }
+  };
+
+  // Handler for the Next button
+  const handleNextPage = () => {
+    // Check if there is a next page based on the data returned by fetchAds
+    if (data?.nextPage !== null && data?.nextPage !== undefined) {
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set('page', data.nextPage.toString());
+      setSearchParams(newSearchParams);
+    }
+  };
+
 
   return (
     <div>
       <header className="flex justify-between items-center mb-6">
-        <h1 className="text-md lg:text-xl font-bold">Anúncios Sorocaps</h1>
+        <h1 className="text-md text-foreground lg:text-xl font-bold">Anúncios Sorocaps</h1>
         <TooltipProvider>
           <div className="flex gap-2">
             <Tooltip>
@@ -118,8 +149,34 @@ export const HomePage = () => {
 
       <ImageGrid
         loading={isPending}
-        images={data}
+        images={data?.ads}
       />
+
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              title="Página anterior"
+              onClick={handlePreviousPage}
+              aria-disabled={Number(page) <= 1 || isPending}
+              className="aria-disabled:opacity-50 aria-disabled:cursor-not-allowed"
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink isActive>{page}</PaginationLink>
+          </PaginationItem>
+          {data.nextPage && (
+            <PaginationItem>
+              <PaginationNext
+                title="Próxima página"
+                onClick={handleNextPage}
+                aria-disabled={!data?.nextPage || isPending}
+                className="aria-disabled:opacity-50 aria-disabled:cursor-not-allowed"
+              />
+            </PaginationItem>
+          )}
+        </PaginationContent>
+      </Pagination>
 
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="max-w-4xl">
@@ -127,7 +184,7 @@ export const HomePage = () => {
             <DialogTitle>Preview do carrossel</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <CarouselPreview images={data?.filter((img) => img.active)} />
+            <CarouselPreview images={data.ads?.filter((img) => img.active)} />
           </div>
         </DialogContent>
       </Dialog>

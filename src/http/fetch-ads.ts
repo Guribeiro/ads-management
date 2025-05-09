@@ -8,14 +8,23 @@ interface Ad {
   status: 'ATIVO' | 'DESATIVADO'
 }
 
-interface FetchAds {
-  status: Status | null
+interface FetchAdsResponse {
+  ads: Ad[],
+  nextPage: number | null
 }
 
-export async function fetchAds({ status }: FetchAds) {
-  return api.get<Ad[]>('/news', {
+interface FetchAds {
+  status: Status | null
+  page?: number | string
+  limit?: number | string
+}
+
+export async function fetchAds({ status, limit, page }: FetchAds) {
+  return api.get<FetchAdsResponse>('/news', {
     params: {
-      status
+      status,
+      limit,
+      page
     }
   })
 }
