@@ -160,7 +160,7 @@ export const HomePage = () => {
               title="Página anterior"
               onClick={handlePreviousPage}
               aria-disabled={Number(page) <= 1 || isFetching}
-              className="aria-disabled:opacity-50 aria-disabled:cursor-not-allowed"
+              className="aria-disabled:opacity-50 aria-disabled:cursor-not-allowed cursor-pointer"
             />
           </PaginationItem>
           <PaginationItem>
@@ -172,7 +172,7 @@ export const HomePage = () => {
                 title="Próxima página"
                 onClick={handleNextPage}
                 aria-disabled={!data?.nextPage || isFetching}
-                className="aria-disabled:opacity-50 aria-disabled:cursor-not-allowed"
+                className="aria-disabled:opacity-50 aria-disabled:cursor-not-allowed cursor-pointer"
               />
             </PaginationItem>
           )}

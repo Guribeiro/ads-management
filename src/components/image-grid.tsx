@@ -173,7 +173,7 @@ const ImageGrid = ({
           </ToggleGroupItem>
         </ToggleGroup>
         <Select onValueChange={handleChangePageLimit} value={limit.toString()}>
-          <SelectTrigger className="h-8 w-[70px]">
+          <SelectTrigger className="h-8">
             <SelectValue placeholder={limit} />
           </SelectTrigger>
           <SelectContent>
