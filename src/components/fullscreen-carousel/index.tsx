@@ -38,7 +38,7 @@ const FullscreenCarousel = () => {
     queryFn: async () => {
       const { data } = await fetchAds({ status: 'ATIVO' })
 
-      const images: Image[] = data.map((item, index) => ({
+      const images: Image[] = data.ads.map((item, index) => ({
         active: item.status === 'ATIVO',
         id: item.id,
         alt: item.descricao,
