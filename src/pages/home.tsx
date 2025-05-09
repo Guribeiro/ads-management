@@ -93,7 +93,7 @@ export const HomePage = () => {
                 >
                   <a href="/carousel">
                     <GalleryThumbnails size={16} />
-                    <span className="hidden md:block ">
+                    <span className="hidden md:block">
                       Carrossel
                     </span>
                   </a>

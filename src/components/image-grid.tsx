@@ -160,11 +160,15 @@ const ImageGrid = ({
           value={status}
         >
           <ToggleGroupItem className="px-4 hover:border-primary" value="ativo" aria-label="Toggle bold">
-            Ativado
+            <span className="hidden md:block">
+              Ativado
+            </span>
             <CirclePower className="text-green-500 h-4 w-4" />
           </ToggleGroupItem>
           <ToggleGroupItem className="px-4 hover:border-destructive" value="desativado" aria-label="Toggle italic">
-            Desativado
+            <span className="hidden md:block">
+              Desativado
+            </span>
             <CirclePower className="text-red-500 h-4 w-4" />
           </ToggleGroupItem>
         </ToggleGroup>
