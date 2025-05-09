@@ -39,7 +39,8 @@ export const HomePage = () => {
   const page = searchParams.get('page') || 1
   const limit = searchParams.get('limit') || 10
 
-  const { data, isPending } = useQuery({
+
+  const { data, isFetching } = useQuery({
     queryKey: ['ads', status, page, limit],
     initialData: { ads: [], nextPage: null },
     queryFn: async () => {
@@ -148,7 +149,7 @@ export const HomePage = () => {
       </header>
 
       <ImageGrid
-        loading={isPending}
+        loading={isFetching}
         images={data?.ads}
       />
 
@@ -158,7 +159,7 @@ export const HomePage = () => {
             <PaginationPrevious
               title="Página anterior"
               onClick={handlePreviousPage}
-              aria-disabled={Number(page) <= 1 || isPending}
+              aria-disabled={Number(page) <= 1 || isFetching}
               className="aria-disabled:opacity-50 aria-disabled:cursor-not-allowed"
             />
           </PaginationItem>
@@ -170,7 +171,7 @@ export const HomePage = () => {
               <PaginationNext
                 title="Próxima página"
                 onClick={handleNextPage}
-                aria-disabled={!data?.nextPage || isPending}
+                aria-disabled={!data?.nextPage || isFetching}
                 className="aria-disabled:opacity-50 aria-disabled:cursor-not-allowed"
               />
             </PaginationItem>
