@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { authSlice } from "@/store/auth"
-import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
+import { EyeIcon, EyeOffIcon, GalleryThumbnails, Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from 'zod'
 
@@ -11,6 +11,7 @@ import logo from '@/assets/logo.png'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createElement, useState } from "react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 const formSchema = z.object({
   email: z.string().min(1, 'Informe seu usuário'),
@@ -106,6 +107,27 @@ export const SigninPage = () => {
           </Form>
         </CardContent>
       </Card>
+      <Tooltip>
+        <TooltipTrigger className="absolute bottom-4 right-4" asChild >
+          <Button
+            variant='outline'
+            asChild
+            className="flex items-center gap-2"
+          >
+            <a href="/carousel">
+              <GalleryThumbnails size={16} />
+              <span className="hidden md:block">
+                Carrossel
+              </span>
+            </a>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom">
+          <p className="text-foreground leading-7 [&:not(:first-child)]:mt-6">
+            Ir para o carrossel
+          </p>
+        </TooltipContent>
+      </Tooltip>
     </div>
   )
 }
