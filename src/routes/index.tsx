@@ -54,11 +54,10 @@ export const IndexRoutes = () => {
                   }
                 />
               </Route>
-              <Route path="/carousel" element={<Carousel />} />
             </Route>
           )}
-
           <Route path="*" element={<Navigate to={auth ? '/dashboard' : '/'} />} />
+          <Route path="/carousel" element={<Carousel />} />
         </Routes>
       </BrowserRouter>
     </AnimatePresence>
