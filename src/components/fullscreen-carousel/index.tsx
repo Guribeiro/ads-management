@@ -6,8 +6,8 @@ import './styles.css'; // Criaremos este arquivo para estilos fullscreen
 import { useQuery } from '@tanstack/react-query';
 import { fetchAds } from '@/http/fetch-ads';
 import { Image } from '../image-grid';
-import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
-import { Terminal } from 'lucide-react';
+import { Loader2, Terminal } from 'lucide-react';
+import { FeedbackAlertContainer, FeedbackAlertDescription, FeedbackAlertIcon, FeedbackAlertTitle } from '../feedback-alert';
 
 const INTERVAL_IN_MINUTES = 30
 const ONE_MINUTE_IN_MILISECONDS = 60000
@@ -31,7 +31,7 @@ const FullscreenCarousel = () => {
   };
 
 
-  const { data, isPending, error } = useQuery({
+  const { data, isFetching, error } = useQuery({
     initialData: [],
     queryKey: ['active-ads'],
     refetchInterval: REFETCH_INTERVAL_IN_MILISECONDS,
@@ -50,17 +50,25 @@ const FullscreenCarousel = () => {
     }
   })
 
-  if (isPending) return <h1>carregando....</h1>
+  if (isFetching) {
+    return (
+      <div className='min-h-screen flex items-center justify-center'>
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
+      </div>
+    )
+  }
 
   if (error) {
     return (
-      <Alert variant='destructive'>
-        <Terminal className="h-4 w-4" />
-        <AlertTitle>Ops... Algo deu errado!</AlertTitle>
-        <AlertDescription>
+      <FeedbackAlertContainer variant='destructive'>
+        <FeedbackAlertIcon>
+          <Terminal className="h-4 w-4" />
+        </FeedbackAlertIcon>
+        <FeedbackAlertTitle>Ops... Algo deu errado!</FeedbackAlertTitle>
+        <FeedbackAlertDescription>
           {error?.message}
-        </AlertDescription>
-      </Alert>
+        </FeedbackAlertDescription>
+      </FeedbackAlertContainer>
     )
   }
 

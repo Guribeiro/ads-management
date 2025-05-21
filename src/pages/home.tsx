@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Eye, GalleryThumbnails } from "lucide-react";
+import { Plus, Eye, GalleryThumbnails, Terminal } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 import ImageGrid from "../components/image-grid";
@@ -22,6 +22,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { FeedbackAlertContainer, FeedbackAlertDescription, FeedbackAlertIcon, FeedbackAlertTitle } from "@/components/feedback-alert";
 
 interface Image {
   id: string;
@@ -40,7 +41,7 @@ export const HomePage = () => {
   const limit = searchParams.get('limit') || 10
 
 
-  const { data, isFetching } = useQuery({
+  const { data, isFetching, error } = useQuery({
     queryKey: ['ads', status, page, limit],
     initialData: { ads: [], nextPage: null },
     queryFn: async () => {
@@ -78,6 +79,19 @@ export const HomePage = () => {
     }
   };
 
+  if (error) {
+    return (
+      <FeedbackAlertContainer variant='destructive'>
+        <FeedbackAlertIcon>
+          <Terminal className="h-4 w-4" />
+        </FeedbackAlertIcon>
+        <FeedbackAlertTitle>Ops... Algo deu errado!</FeedbackAlertTitle>
+        <FeedbackAlertDescription>
+          {error?.message}
+        </FeedbackAlertDescription>
+      </FeedbackAlertContainer>
+    )
+  }
 
   return (
     <div>
